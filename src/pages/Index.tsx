@@ -4,15 +4,19 @@ import WeatherWidget from '@/components/WeatherWidget';
 import SoilInputForm from '@/components/SoilInputForm';
 import CropRecommendations from '@/components/CropRecommendations';
 import LanguageToggle from '@/components/LanguageToggle';
+import SoilImprovementSuggestions from '@/components/SoilImprovementSuggestions';
+import FeedbackForm from '@/components/FeedbackForm';
 import { Sprout, Users, BookOpen } from 'lucide-react';
 import heroImage from '@/assets/hero-agriculture.jpg';
 
 const Index = () => {
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [language, setLanguage] = useState<'en' | 'hi'>('en');
+  const [soilAnalysisData, setSoilAnalysisData] = useState(null);
 
   const handleSoilAnalysis = (soilData: any) => {
     console.log('Analyzing soil data:', soilData);
+    setSoilAnalysisData(soilData);
     // Here we would send data to ML model
     setShowRecommendations(true);
   };
@@ -163,9 +167,17 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Crop Recommendations */}
-          <div className="mt-8">
-            <CropRecommendations isVisible={showRecommendations} />
+          {/* Results Section */}
+          {showRecommendations && soilAnalysisData && (
+            <div className="space-y-8 mt-8">
+              <CropRecommendations isVisible={showRecommendations} />
+              <SoilImprovementSuggestions soilData={soilAnalysisData} />
+            </div>
+          )}
+
+          {/* Feedback Section */}
+          <div className="mt-12">
+            <FeedbackForm />
           </div>
         </div>
       </section>

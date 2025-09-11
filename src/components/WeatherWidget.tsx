@@ -10,8 +10,8 @@ import { useGeolocation } from '@/hooks/useGeolocation';
 import { useWeatherAPI } from '@/hooks/useWeatherAPI';
 
 const WeatherWidget: React.FC = () => {
-  const [apiKey, setApiKey] = useState('');
-  const [showApiInput, setShowApiInput] = useState(false);
+  // Using provided OpenWeatherMap API key
+  const apiKey = '3a6988371859b0df0ad3540edf6157d0';
   const { location, loading: locationLoading, error: locationError, refetch: refetchLocation } = useGeolocation();
   const { weather, loading: weatherLoading, error: weatherError, refetch: refetchWeather } = useWeatherAPI(
     location?.latitude,
@@ -19,76 +19,6 @@ const WeatherWidget: React.FC = () => {
     apiKey
   );
 
-  const handleApiKeySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (apiKey.trim()) {
-      setShowApiInput(false);
-      refetchWeather();
-    }
-  };
-
-  // Show API key input if no key is set
-  if (!apiKey && !showApiInput) {
-    return (
-      <Card className="card-agricultural">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-primary">
-            <Cloud className="h-5 w-5" />
-            Real-Time Weather
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Alert className="mb-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              To get real-time weather data, you need an OpenWeatherMap API key.
-              <br />
-              Get your free API key at: <a href="https://openweathermap.org/api" target="_blank" rel="noopener noreferrer" className="text-primary underline">openweathermap.org/api</a>
-            </AlertDescription>
-          </Alert>
-          <Button onClick={() => setShowApiInput(true)} className="w-full">
-            Enter API Key
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (showApiInput) {
-    return (
-      <Card className="card-agricultural">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-primary">
-            <Cloud className="h-5 w-5" />
-            Weather API Setup
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleApiKeySubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="apiKey">OpenWeatherMap API Key</Label>
-              <Input
-                id="apiKey"
-                type="password"
-                placeholder="Enter your API key"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                required
-              />
-            </div>
-            <div className="flex gap-2">
-              <Button type="submit" className="flex-1">
-                Connect Weather API
-              </Button>
-              <Button type="button" variant="outline" onClick={() => setShowApiInput(false)}>
-                Cancel
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    );
-  }
 
   // Handle loading and error states
   if (locationLoading) {
@@ -172,9 +102,6 @@ const WeatherWidget: React.FC = () => {
             <Button onClick={refetchWeather} className="flex-1" variant="outline">
               <RefreshCw className="h-4 w-4 mr-2" />
               Retry
-            </Button>
-            <Button onClick={() => setShowApiInput(true)} variant="outline">
-              Change API Key
             </Button>
           </div>
         </CardContent>
