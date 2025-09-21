@@ -23,8 +23,8 @@ const CropRecommendations: React.FC<CropRecommendationsProps> = ({ isVisible }) 
   // Mock crop recommendations - will be replaced with ML model output
   const recommendations: CropRecommendation[] = [
     {
-      name: 'Rice',
-      namehindi: 'चावल',
+      name: 'Paddy',
+      namehindi: 'धान',
       suitabilityScore: 92,
       profitabilityScore: 78,
       mspPrice: 2040,
